@@ -1,9 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
@@ -12,13 +15,19 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
 	public static int boundsW, boundsH;
 
-	private Item[] items;
+	private ArrayList<Item> items = new ArrayList<>();
 	private WorkTable workTable;
 
 	private boolean capturing = false;
 	private Item capturedItem;
 	private double capture_xOffset = 0;
 	private double capture_yOffset = 0;
+
+	private boolean showHint = false;
+	private Item hoveringItem;
+
+	// ################debug
+	private boolean showCollisionBox = false;
 
 	public GamePanel() {
 		Organ intestines = new Organ(175, 220, 1.5, 1.5, Organ.OrganType.Intestines);
@@ -29,7 +38,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		Organ heart = new Organ(205, 150, 0.5, 0.5, Organ.OrganType.Heart);
 		Organ lung_left = new Organ(170, 120, 1.8, 1.8, Organ.OrganType.Lung_left);
 		Organ lung_right = new Organ(230, 120, 1.8, 1.8, Organ.OrganType.Lung_right);
-		items = new Item[] { intestines, stomach, kidney_left, kidney_right, liver, heart, lung_left, lung_right };
+		items.add(intestines);
+		items.add(stomach);
+		items.add(kidney_left);
+		items.add(kidney_right);
+		items.add(liver);
+		items.add(heart);
+		items.add(lung_left);
+		items.add(lung_right);
 
 		workTable = new WorkTable();
 
@@ -54,6 +70,16 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		for (Item item : items) {
 			item.Draw(g);
 		}
+		if (showHint) {
+			if (showCollisionBox)
+				hoveringItem.DrawBounds(g);
+
+			g.setFont(new Font("Arial", Font.BOLD, 14));
+			g.setColor(Color.gray);
+			g.fillRect((int) hoveringItem.x + 50, (int) hoveringItem.y, 90, 30);
+			g.setColor(Color.black);
+			g.drawString(hoveringItem.hintName, (int) hoveringItem.x + 55, (int) hoveringItem.y + 20);
+		}
 
 	}
 
@@ -64,19 +90,34 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			capturedItem.y = e.getY() - capture_yOffset;
 
 			repaint();
-			if ((Organ) capturedItem == capturedItem) {
-				System.out.println(
-						"dragging " + ((Organ) capturedItem).type + " x: " + capturedItem.x + " y: " + capturedItem.y);
-			} else {
-				System.out.println("dragging item");
-			}
+			// if ((Organ) capturedItem == capturedItem) { System.out.println( "dragging " +
+			// ((Organ) capturedItem).type + " x: " + capturedItem.x + " y: " +
+			// capturedItem.y); } else { System.out.println("dragging item"); }
 		}
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		int mouseX = e.getX();
+		int mouseY = e.getY();
+		ArrayList<Item> revItems = new ArrayList<>(items);
+		Collections.reverse(revItems);
 
+		for (Item item : revItems) {
+			if (mouseX > item.x && (item.x + item.w * item.getWidth()) > mouseX) {
+				if (mouseY > item.y && (item.y + item.h * item.getHeight()) > mouseY) {
+
+					showHint = true;
+					hoveringItem = item;
+					repaint();
+					return;
+				} else
+					showHint = false;
+			} else
+				showHint = false;
+		}
+		repaint();
 	}
 
 	@Override
@@ -90,8 +131,11 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 
+		ArrayList<Item> revItems = new ArrayList<>(items);
+		Collections.reverse(revItems);
+
 		System.out.println("clicked: " + mouseX + ", " + mouseY);
-		for (Item item : items) {
+		for (Item item : revItems) {
 			if (mouseX > item.x && (item.x + item.w * item.getWidth()) > mouseX) {
 				if (mouseY > item.y && (item.y + item.h * item.getHeight()) > mouseY) {
 					if ((Organ) item == item) {
@@ -99,7 +143,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 					} else {
 						System.out.println("captured " + item);
 					}
-					pushItemUp(item); // 7 in array (lung_right)
+					showHint = false;
+					pushItemUp(item);
+					repaint();
 					capture_xOffset = e.getX() - item.x;
 					capture_yOffset = e.getY() - item.y;
 					capturing = true;
@@ -112,25 +158,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	private void pushItemUp(Item item) {
-		int locOfitem = -1;
-
-		for (int i = 0; i < items.length; i++) {
-			if (items[i] == item)
-				locOfitem = i;
-		}
-		System.out.println(locOfitem);
-
-		if (locOfitem == -1) {
-			System.out.println("nothing found");
-			return;
-		}
-		for (int i = locOfitem; i < items.length; i++) {
-			if (i == items.length-1)
-				items[i] = item;
-			else
-				items[i] = items[i + 1];
-		}
-		System.out.println(items);
+		// System.out.println("was: " + items);
+		items.remove(item);
+		items.add(item);
+		// System.out.println("is: " + items);
 	}
 
 	@Override

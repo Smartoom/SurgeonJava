@@ -6,6 +6,7 @@ public class Item {
 	public double x, y;
 	public double w = 1, h = 1;
 	protected Image selectedImg = null;
+	public String hintName;
 
 	public Item(double _x, double _y, double _w, double _h) {
 		x = _x;
@@ -22,6 +23,10 @@ public class Item {
 	public void Draw(Graphics g) {
 		g.setColor(Color.black);
 		g.drawRect((int) x, (int) y, (int) w * getWidth(), (int) h * getHeight());
+	}
+	public void DrawBounds(Graphics g) {
+		g.setColor(Color.black);
+		g.drawRect((int) x, (int) y, (int) (w * getWidth()), (int) (h * getHeight()));
 	}
 
 	public int getWidth() {

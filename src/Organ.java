@@ -24,12 +24,14 @@ public class Organ extends Item {
 	public Organ(double _x, double _y, double _w, double _h, OrganType _type) {
 		super(_x, _y, _w, _h);
 		type = OrganType.valueOf(_type.name());
+		hintName = _type.name();
 		SetImage();
 	}
 
 	public Organ(double _x, double _y, OrganType _type) {
 		super(_x, _y);
 		type = OrganType.valueOf(_type.name());
+		hintName = _type.name();
 		SetImage();
 	}
 

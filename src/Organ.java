@@ -35,46 +35,42 @@ public class Organ extends Item {
 		SetImage();
 	}
 
-	public void Draw(Graphics g) {
-		g.drawImage(selectedImg, (int) x, (int) y, (int) (w * getWidth()), (int) (h * getHeight()), null);
-	}
-
 	private void SetImage() {
 		switch (type) {
 		case Brain:
-			selectedImg = brainImg;
+			SetImage(brainImg);
 			break;
 
 		case Heart:
-			selectedImg = heartImg;
+			SetImage(heartImg);
 			break;
 
 		case Intestines:
-			selectedImg = intestinesImg;
+			SetImage(intestinesImg);
 			break;
 
 		case Kidney_left:
-			selectedImg = kidney_leftImg;
+			SetImage(kidney_leftImg);
 			break;
 
 		case Kidney_right:
-			selectedImg = kidney_rightImg;
+			SetImage(kidney_rightImg);
 			break;
 
 		case Liver:
-			selectedImg = liverImg;
+			SetImage(liverImg);
 			break;
 
 		case Lung_left:
-			selectedImg = lung_leftImg;
+			SetImage(lung_leftImg);
 			break;
 
 		case Lung_right:
-			selectedImg = lung_rightImg;
+			SetImage(lung_rightImg);
 			break;
 
 		case Stomach:
-			selectedImg = stomachImg;
+			SetImage(stomachImg);
 			break;
 
 		default:

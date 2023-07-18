@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -17,6 +18,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 	private ArrayList<Item> items = new ArrayList<>();
 	private WorkTable workTable;
+	public static int trashSpawned = 0;
 
 	private boolean capturing = false;
 	private Item capturedItem;
@@ -27,7 +29,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	private Item hoveringItem;
 
 	// ################debug
-	private boolean showCollisionBox = false;
+	private boolean showCollisionBox = true;
 
 	public GamePanel() {
 		Organ intestines = new Organ(175, 220, 1.5, 1.5, Organ.OrganType.Intestines);
@@ -47,6 +49,21 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		items.add(lung_left);
 		items.add(lung_right);
 
+		while (trashSpawned < 5) {
+			for (int i = 0; i < items.size(); i++) {
+				if (!items.get(i).getClass().isAssignableFrom(Trash.class)) {
+					Random rand = new Random();
+					if (rand.nextInt(101) > 70) {
+						trashSpawned++;
+						Trash bicycle = new Trash(items.get(i).x + rand.nextInt(30), items.get(i).y + rand.nextInt(30),
+								0.2, 0.2);
+						System.out.println("spawned trash");
+						items.add(i, bicycle);
+					}
+				}
+			}
+		}
+
 		workTable = new WorkTable();
 
 		addMouseListener(this);
@@ -62,13 +79,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		// background
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, getWidth(), getHeight());
+
+		workTable.meatBackRenderer.Draw(g);
+		;
+		workTable.skinRenderer.Draw(g);
 		workTable.DrawBounds(g);
 
-		workTable.DrawMeatBack(g);
-		workTable.DrawSkin(g);
-
 		for (Item item : items) {
-			item.Draw(g);
+			item.spriteRenderer.Draw(g, item.x, item.y);
 		}
 		if (showHint) {
 			if (showCollisionBox)
@@ -80,6 +98,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			g.setColor(Color.black);
 			g.drawString(hoveringItem.hintName, (int) hoveringItem.x + 55, (int) hoveringItem.y + 20);
 		}
+		
+		workTable.DrawScore(g);
 
 	}
 
@@ -105,8 +125,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		Collections.reverse(revItems);
 
 		for (Item item : revItems) {
-			if (mouseX > item.x && (item.x + item.w * item.getWidth()) > mouseX) {
-				if (mouseY > item.y && (item.y + item.h * item.getHeight()) > mouseY) {
+			if (mouseX > item.x && (item.x + item.w) > mouseX) {
+				if (mouseY > item.y && (item.y + item.h) > mouseY) {
 
 					showHint = true;
 					hoveringItem = item;
@@ -117,7 +137,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			} else
 				showHint = false;
 		}
-		repaint();
+		if (!showHint) {
+			repaint();
+		}
 	}
 
 	@Override
@@ -136,13 +158,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 		System.out.println("clicked: " + mouseX + ", " + mouseY);
 		for (Item item : revItems) {
-			if (mouseX > item.x && (item.x + item.w * item.getWidth()) > mouseX) {
-				if (mouseY > item.y && (item.y + item.h * item.getHeight()) > mouseY) {
-					if ((Organ) item == item) {
-						System.out.println("captured " + ((Organ) item).type);
-					} else {
-						System.out.println("captured " + item);
-					}
+			if (mouseX > item.x && (item.x + item.w) > mouseX) {
+				if (mouseY > item.y && (item.y + item.h) > mouseY) {
+					System.out.println("captured " + item);
+
 					showHint = false;
 					pushItemUp(item);
 					repaint();
@@ -167,12 +186,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (capturing) {
-			if ((Organ) capturedItem == capturedItem) {
-				System.out.println("released " + ((Organ) capturedItem).type);
-			} else {
-				System.out.println("released item");
-			}
+			System.out.println("released item");
+
 			workTable.Place(capturedItem);
+			repaint();
 			capturing = false;
 			capturedItem = null;
 		}

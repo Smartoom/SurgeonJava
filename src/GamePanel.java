@@ -5,9 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -27,11 +25,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 	private boolean showHint = false;
 	private Item hoveringItem;
+	
+	private int minimumTrash = 2;//out of 100
 
 	// ################debug
 	private boolean showCollisionBox = true;
 
 	public GamePanel() {
+		new GameMenus();
 		Organ intestines = new Organ(175, 220, 1.5, 1.5, Organ.OrganType.Intestines);
 		Organ kidney_left = new Organ(170, 235, 1.8, 1.8, Organ.OrganType.Kidney_left);
 		Organ kidney_right = new Organ(240, 235, 1.8, 1.8, Organ.OrganType.Kidney_right);
@@ -49,15 +50,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		items.add(lung_left);
 		items.add(lung_right);
 
-		while (trashSpawned < 5) {
+		while (trashSpawned < minimumTrash) {
 			for (int i = 0; i < items.size(); i++) {
 				if (!items.get(i).getClass().isAssignableFrom(Trash.class)) {
 					Random rand = new Random();
-					if (rand.nextInt(101) > 70) {
+					if (rand.nextInt(101) > 75) {
 						trashSpawned++;
-						Trash bicycle = new Trash(items.get(i).x + rand.nextInt(30), items.get(i).y + rand.nextInt(30),
-								0.2, 0.2);
-						System.out.println("spawned trash");
+						Trash bicycle = new Trash(items.get(i).x + rand.nextInt(20) - 10, items.get(i).y + rand.nextInt(30), 0.2, 0.2);
+						System.out.println("spawned trash on " + ((Organ) items.get(i)).type);
 						items.add(i, bicycle);
 					}
 				}
@@ -76,14 +76,20 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		boundsW = getSize().width;
 		boundsH = getSize().height;
 
+		if (GameMenus.instance.won) {
+			GameMenus.instance.DrawWin(g);
+			return;
+		}
+
 		// background
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		workTable.meatBackRenderer.Draw(g);
-		;
+
 		workTable.skinRenderer.Draw(g);
 		workTable.DrawBounds(g);
+		workTable.iceBagRenderer.Draw(g);
 
 		for (Item item : items) {
 			item.spriteRenderer.Draw(g, item.x, item.y);
@@ -98,7 +104,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			g.setColor(Color.black);
 			g.drawString(hoveringItem.hintName, (int) hoveringItem.x + 55, (int) hoveringItem.y + 20);
 		}
-		
+
 		workTable.DrawScore(g);
 
 	}

@@ -10,8 +10,10 @@ public class WorkTable {
 	private int humanWidthMultiplier = 4, humanHeightMultiplier = 4;
 	private Image body_skinImg = new ImageIcon("SurgeryBody_Body.png").getImage();
 	private Image body_meatImg = new ImageIcon("SurgeryBody_MeatBack.png").getImage();
+	private Image iceBag_Img = new ImageIcon("IceBag.png").getImage();
 	public SpriteRenderer skinRenderer = new SpriteRenderer();
 	public SpriteRenderer meatBackRenderer = new SpriteRenderer();
+	public SpriteRenderer iceBagRenderer = new SpriteRenderer();
 
 	private int trashCollected = 0;
 
@@ -27,6 +29,9 @@ public class WorkTable {
 		meatBackRenderer.y = -145;
 		meatBackRenderer.SetSize(body_meatImg.getWidth(null) * humanWidthMultiplier,
 				body_meatImg.getHeight(null) * humanHeightMultiplier);
+
+		iceBagRenderer.image = iceBag_Img;
+		iceBagRenderer.SetSize(leftBoundry, GamePanel.boundsH);
 	}
 
 	public void DrawBounds(Graphics g) {
@@ -47,6 +52,9 @@ public class WorkTable {
 				System.out.println("threw away");
 				item.x = 5000;
 				trashCollected++;
+				if (trashCollected == GamePanel.trashSpawned) {
+					GameMenus.instance.won = true;
+				}
 			} else {
 				System.out.println("nu uh");
 				item.x = GamePanel.boundsW - rightBoundry - item.w;

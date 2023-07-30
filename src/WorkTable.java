@@ -8,9 +8,9 @@ import javax.swing.ImageIcon;
 public class WorkTable {
 	private int leftBoundry = 70, rightBoundry = 70;
 	private int humanWidthMultiplier = 4, humanHeightMultiplier = 4;
-	private Image body_skinImg = new ImageIcon("SurgeryBody_Body.png").getImage();
-	private Image body_meatImg = new ImageIcon("SurgeryBody_MeatBack.png").getImage();
-	private Image iceBag_Img = new ImageIcon("IceBag.png").getImage();
+	private Image body_skinImg = new ImageIcon("Resources/SurgeryBody_Body.png").getImage();
+	private Image body_meatImg = new ImageIcon("Resources/SurgeryBody_MeatBack.png").getImage();
+	private Image iceBag_Img = new ImageIcon("Resources/IceBag.png").getImage();
 	public SpriteRenderer skinRenderer = new SpriteRenderer();
 	public SpriteRenderer meatBackRenderer = new SpriteRenderer();
 	public SpriteRenderer iceBagRenderer = new SpriteRenderer();

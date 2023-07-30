@@ -4,15 +4,15 @@ import javax.swing.ImageIcon;
 
 public class Organ extends Item {
 	// fields (images)
-	private Image brainImg = new ImageIcon("brain.png").getImage();
-	private Image heartImg = new ImageIcon("heart.png").getImage();
-	private Image intestinesImg = new ImageIcon("intestines.png").getImage();
-	private Image kidney_leftImg = new ImageIcon("kidneys_left.png").getImage();
-	private Image kidney_rightImg = new ImageIcon("kidneys_right.png").getImage();
-	private Image liverImg = new ImageIcon("Liver.png").getImage();
-	private Image lung_leftImg = new ImageIcon("lung_left.png").getImage();
-	private Image lung_rightImg = new ImageIcon("lung_right.png").getImage();
-	private Image stomachImg = new ImageIcon("stomach.png").getImage();
+	private Image brainImg = new ImageIcon("Resources/brain.png").getImage();
+	private Image heartImg = new ImageIcon("Resources/heart.png").getImage();
+	private Image intestinesImg = new ImageIcon("Resources/intestines.png").getImage();
+	private Image kidney_leftImg = new ImageIcon("Resources/kidneys_left.png").getImage();
+	private Image kidney_rightImg = new ImageIcon("Resources/kidneys_right.png").getImage();
+	private Image liverImg = new ImageIcon("Resources/Liver.png").getImage();
+	private Image lung_leftImg = new ImageIcon("Resources/lung_left.png").getImage();
+	private Image lung_rightImg = new ImageIcon("Resources/lung_right.png").getImage();
+	private Image stomachImg = new ImageIcon("Resources/stomach.png").getImage();
 
 	public enum OrganType {
 		Brain, Heart, Intestines, Kidney_left, Kidney_right, Liver, Lung_left, Lung_right, Stomach

@@ -4,11 +4,11 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 public class Trash extends Item {
-	private Image bicycle = new ImageIcon("bicycle.png").getImage();
-	private Image oppenheimerDisc = new ImageIcon("oppenheimerDVDDisc.png").getImage();
-	private Image tumor = new ImageIcon("tumor.png").getImage();
-	private Image surgicalKnife = new ImageIcon("surgicalKnife.png").getImage();
-	private Image fish = new ImageIcon("fish.png").getImage();
+	private Image bicycle = new ImageIcon("Resources/bicycle.png").getImage();
+	private Image oppenheimerDisc = new ImageIcon("Resources/oppenheimerDVDDisc.png").getImage();
+	private Image tumor = new ImageIcon("Resources/tumor.png").getImage();
+	private Image surgicalKnife = new ImageIcon("Resources/surgicalKnife.png").getImage();
+	private Image fish = new ImageIcon("Resources/fish.png").getImage();
 
 	public Trash(double _x, double _y) {
 		super(_x, _y);

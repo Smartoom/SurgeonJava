@@ -8,6 +8,7 @@ public class Trash extends Item {
 	private Image oppenheimerDisc = new ImageIcon("oppenheimerDVDDisc.png").getImage();
 	private Image tumor = new ImageIcon("tumor.png").getImage();
 	private Image surgicalKnife = new ImageIcon("surgicalKnife.png").getImage();
+	private Image fish = new ImageIcon("fish.png").getImage();
 
 	public Trash(double _x, double _y) {
 		super(_x, _y);
@@ -17,18 +18,22 @@ public class Trash extends Item {
 	private void ChooseImage() {
 		Random rand = new Random();
 		int randomInt = rand.nextInt(101);
-		System.out.println(randomInt);
 
 		// edit chances
-		if (randomInt <= 50) {
+		if (randomInt <= 20) {
 			SetImage(bicycle);
 			hintName = "bicycle";
+		} else if (randomInt <= 40) {
+			wMult = 0.5;
+			hMult = 0.5;
+			SetImage(fish);
+			hintName = "fish";
 		} else if (randomInt <= 80) {
 			wMult = 0.5;
 			hMult = 0.5;
 			SetImage(tumor);
 			hintName = "tumor";
-		} else if (randomInt <= 90) {
+		} else if (randomInt <= 95) {
 			wMult = 0.7;
 			hMult = 0.7;
 			SetImage(surgicalKnife);

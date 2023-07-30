@@ -38,6 +38,7 @@ public class WorkTable {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, leftBoundry, GamePanel.boundsH);
 		g.fillRect(GamePanel.boundsW - rightBoundry, 0, GamePanel.boundsW, GamePanel.boundsH);
+		iceBagRenderer.Draw(g,50,50);
 	}
 
 	public void DrawScore(Graphics g) {

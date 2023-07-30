@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	private int minimumTrash = 2;//out of 100
 
 	// ################debug
-	private boolean showCollisionBox = true;
+	private boolean showCollisionBox = false;
 
 	public GamePanel() {
 		new GameMenus();

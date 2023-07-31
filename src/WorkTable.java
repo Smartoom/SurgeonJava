@@ -9,10 +9,12 @@ public class WorkTable {
 	private Image body_skinImg = new ImageIcon("Resources/SurgeryBody_Body.png").getImage();
 	private Image body_meatImg = new ImageIcon("Resources/SurgeryBody_MeatBack.png").getImage();
 	private Image iceBag_Img = new ImageIcon("Resources/IceBag.png").getImage();
+	private Image trashBag_Img = new ImageIcon("Resources/TrashBag.png").getImage();
 	public SpriteRenderer skinRenderer = new SpriteRenderer();
 	public SpriteRenderer meatBackRenderer = new SpriteRenderer();
 	public SpriteRenderer iceBagRenderer = new SpriteRenderer();
-	private int leftBoundry = iceBag_Img.getWidth(null), rightBoundry = 70;
+	public SpriteRenderer trashBagRenderer = new SpriteRenderer();
+	private int leftBoundry = iceBag_Img.getWidth(null)-10, rightBoundry = trashBag_Img.getWidth(null)-10;
 	private int humanWidthMultiplier = 4, humanHeightMultiplier = 4;
 
 	private int trashCollected = 0;
@@ -28,8 +30,16 @@ public class WorkTable {
 		meatBackRenderer.y = -145;
 		meatBackRenderer.SetSize(body_meatImg.getWidth(null) * humanWidthMultiplier, body_meatImg.getHeight(null) * humanHeightMultiplier);
 
+	}
+
+	public void SetUpUIBags() {
+		System.out.print("########");
 		iceBagRenderer.image = iceBag_Img;
-		iceBagRenderer.SetSize(iceBag_Img.getWidth(null), 0);// also set in gamepanel
+		iceBagRenderer.SetSize(leftBoundry, GamePanel.boundsH);
+
+		trashBagRenderer.image = trashBag_Img;
+		trashBagRenderer.x = GamePanel.boundsW - rightBoundry;
+		trashBagRenderer.SetSize(rightBoundry, GamePanel.boundsH);
 	}
 
 	public void DrawBounds(Graphics g) {
@@ -40,8 +50,8 @@ public class WorkTable {
 
 	public void DrawScore(Graphics g) {
 		g.setColor(Color.red);
-		g.setFont(new Font("Arial", Font.PLAIN, 14));
-		g.drawString(trashCollected + "/" + GamePanel.trashSpawned, GamePanel.boundsW - 100, 30);
+		g.setFont(new Font("Arial", Font.PLAIN, 15));
+		g.drawString(trashCollected + "/" + GamePanel.trashSpawned + " trash collected", GamePanel.boundsW - 220, 30);
 	}
 
 	public void Place(Item item) {

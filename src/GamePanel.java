@@ -75,8 +75,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	public void paintComponent(Graphics g) {
 		boundsW = getSize().width;
 		boundsH = getSize().height;
-		if (workTable.iceBagRenderer.h == 0) {
-			workTable.iceBagRenderer.SetSize(workTable.iceBagRenderer.w, boundsH);
+		if (workTable.iceBagRenderer.h == 1) {
+			workTable.SetUpUIBags();
 		}
 
 		if (GameMenus.instance.won) {
@@ -93,6 +93,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 		workTable.skinRenderer.Draw(g);
 		workTable.DrawBounds(g);
 		workTable.iceBagRenderer.Draw(g);
+		workTable.trashBagRenderer.Draw(g);
 
 		for (Item item : items) {
 			item.spriteRenderer.Draw(g, item.x, item.y);

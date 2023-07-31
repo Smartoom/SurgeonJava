@@ -6,14 +6,14 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class WorkTable {
-	private int leftBoundry = 70, rightBoundry = 70;
-	private int humanWidthMultiplier = 4, humanHeightMultiplier = 4;
 	private Image body_skinImg = new ImageIcon("Resources/SurgeryBody_Body.png").getImage();
 	private Image body_meatImg = new ImageIcon("Resources/SurgeryBody_MeatBack.png").getImage();
 	private Image iceBag_Img = new ImageIcon("Resources/IceBag.png").getImage();
 	public SpriteRenderer skinRenderer = new SpriteRenderer();
 	public SpriteRenderer meatBackRenderer = new SpriteRenderer();
 	public SpriteRenderer iceBagRenderer = new SpriteRenderer();
+	private int leftBoundry = iceBag_Img.getWidth(null), rightBoundry = 70;
+	private int humanWidthMultiplier = 4, humanHeightMultiplier = 4;
 
 	private int trashCollected = 0;
 
@@ -21,24 +21,21 @@ public class WorkTable {
 		skinRenderer.image = body_skinImg;
 		skinRenderer.x = 0;
 		skinRenderer.y = -145;
-		skinRenderer.SetSize(body_skinImg.getWidth(null) * humanWidthMultiplier,
-				body_skinImg.getHeight(null) * humanHeightMultiplier);
+		skinRenderer.SetSize(body_skinImg.getWidth(null) * humanWidthMultiplier, body_skinImg.getHeight(null) * humanHeightMultiplier);
 
 		meatBackRenderer.image = body_meatImg;
 		meatBackRenderer.x = 0;
 		meatBackRenderer.y = -145;
-		meatBackRenderer.SetSize(body_meatImg.getWidth(null) * humanWidthMultiplier,
-				body_meatImg.getHeight(null) * humanHeightMultiplier);
+		meatBackRenderer.SetSize(body_meatImg.getWidth(null) * humanWidthMultiplier, body_meatImg.getHeight(null) * humanHeightMultiplier);
 
 		iceBagRenderer.image = iceBag_Img;
-		iceBagRenderer.SetSize(leftBoundry, GamePanel.boundsH);
+		iceBagRenderer.SetSize(iceBag_Img.getWidth(null), 0);// also set in gamepanel
 	}
 
 	public void DrawBounds(Graphics g) {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, leftBoundry, GamePanel.boundsH);
 		g.fillRect(GamePanel.boundsW - rightBoundry, 0, GamePanel.boundsW, GamePanel.boundsH);
-		iceBagRenderer.Draw(g,50,50);
 	}
 
 	public void DrawScore(Graphics g) {
@@ -48,7 +45,7 @@ public class WorkTable {
 	}
 
 	public void Place(Item item) {
-		if (GamePanel.boundsW - rightBoundry < item.x + item.w) {
+		if (GamePanel.boundsW - rightBoundry < item.x + item.w) {// if placed in right side
 			if (item.getClass().isAssignableFrom(Trash.class)) {
 				System.out.println("threw away");
 				item.x = 5000;
@@ -60,6 +57,8 @@ public class WorkTable {
 				System.out.println("nu uh");
 				item.x = GamePanel.boundsW - rightBoundry - item.w;
 			}
+		} else if (item.x < leftBoundry) {// if placed in left side
+			System.out.println("yeeeeah! get that stuff in heeerreee!");
 		}
 	}
 }

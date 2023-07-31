@@ -25,8 +25,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 	private boolean showHint = false;
 	private Item hoveringItem;
-	
-	private int minimumTrash = 2;//out of 100
+
+	private int minimumTrash = 2;// out of 100
 
 	// ################debug
 	private boolean showCollisionBox = false;
@@ -75,6 +75,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 	public void paintComponent(Graphics g) {
 		boundsW = getSize().width;
 		boundsH = getSize().height;
+		if (workTable.iceBagRenderer.h == 0) {
+			workTable.iceBagRenderer.SetSize(workTable.iceBagRenderer.w, boundsH);
+		}
 
 		if (GameMenus.instance.won) {
 			GameMenus.instance.DrawWin(g);

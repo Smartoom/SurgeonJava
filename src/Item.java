@@ -25,11 +25,11 @@ public class Item {
 		g.setColor(Color.black);
 		g.drawRect((int) x, (int) y, (int) w, (int) h);
 	}
-	
+
 	public void SetImage(Image _image) {
 		spriteRenderer.image = _image;
-		w = wMult*spriteRenderer.image.getWidth(null);
-		h = hMult*spriteRenderer.image.getHeight(null);
+		w = wMult * spriteRenderer.image.getWidth(null);
+		h = hMult * spriteRenderer.image.getHeight(null);
 		spriteRenderer.SetSize(w, h);
 	}
 }

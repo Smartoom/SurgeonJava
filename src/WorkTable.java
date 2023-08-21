@@ -20,13 +20,9 @@ public class WorkTable {
 
 	public WorkTable(Image body_skinImg, Image body_meatImg) {
 		skinRenderer.image = body_skinImg;
-		skinRenderer.x = 0;
-		skinRenderer.y = -145;
 		skinRenderer.SetSize(body_skinImg.getWidth(null) * humanWidthMultiplier, body_skinImg.getHeight(null) * humanHeightMultiplier);
 
 		meatBackRenderer.image = body_meatImg;
-		meatBackRenderer.x = 0;
-		meatBackRenderer.y = -145;
 		meatBackRenderer.SetSize(body_meatImg.getWidth(null) * humanWidthMultiplier, body_meatImg.getHeight(null) * humanHeightMultiplier);
 
 		iceBagRenderer.image = iceBag_Img;
@@ -59,7 +55,7 @@ public class WorkTable {
 				item.x = 500;
 				trashCollected++;
 				if (trashCollected == trashSpawned) {
-					GameMenus.instance.won = true;
+					GamePanel.instance.startNextLevel();
 				}
 			} else {
 				System.out.println("nu uh");

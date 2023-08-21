@@ -5,12 +5,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
 	public static int boundsW, boundsH;
+	public static GamePanel instance;
 
 	private boolean capturing = false;
 	private Item capturedItem;
@@ -28,7 +28,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 	public GamePanel() {
 		new GameMenus();
-		patient = new FirstPatient(new ImageIcon("Resources/SurgeryBody_Body.png").getImage(), new ImageIcon("Resources/SurgeryBody_MeatBack.png").getImage());
+		instance = this;
+		patient = new FirstPatient();
 
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -62,6 +63,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 			g.drawString(hoveringItem.hintName, (int) hoveringItem.x + 55, (int) hoveringItem.y + 20);
 		}
 
+	}
+	
+	public void startNextLevel() {
+		if(patient.getClass().isAssignableFrom(FirstPatient.class)) {
+		//change later
+		patient = new CrewmatePatient();
+		}else
+			GameMenus.instance.won = true;
 	}
 
 	@Override

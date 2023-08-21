@@ -2,10 +2,22 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 public class FirstPatient extends Client {
 
-	public FirstPatient(Image bodySkin, Image bodyMeat) {
-		super(bodySkin, bodyMeat);
+	private Image bicycle = new ImageIcon("Resources/bicycle.png").getImage();
+	private Image oppenheimerDisc = new ImageIcon("Resources/oppenheimerDVDDisc.png").getImage();
+	private Image tumor = new ImageIcon("Resources/tumor.png").getImage();
+	private Image surgicalKnife = new ImageIcon("Resources/surgicalKnife.png").getImage();
+	private Image fish = new ImageIcon("Resources/fish.png").getImage();
+
+	public FirstPatient() {
+		super(new ImageIcon("Resources/SurgeryBody_Body.png").getImage(), new ImageIcon("Resources/SurgeryBody_MeatBack.png").getImage());
+		workTable.skinRenderer.x = 0;
+		workTable.skinRenderer.y = -145;
+		workTable.meatBackRenderer.x = 0;
+		workTable.meatBackRenderer.y = -145;
 		Organ intestines = new Organ(175, 220, 1.5, 1.5, Organ.OrganType.Intestines);
 		Organ kidney_left = new Organ(170, 235, 1.8, 1.8, Organ.OrganType.Kidney_left);
 		Organ kidney_right = new Organ(240, 235, 1.8, 1.8, Organ.OrganType.Kidney_right);
@@ -30,9 +42,37 @@ public class FirstPatient extends Client {
 					Random rand = new Random();
 					if (rand.nextInt(101) > 75) {
 						trashSpawned++;
-						Trash bicycle = new Trash(items.get(i).x + rand.nextInt(20) - 10, items.get(i).y + rand.nextInt(30), 0.2, 0.2);
-						System.out.println("spawned trash on " + ((Organ) items.get(i)).type + " at: " + items.get(i).x + "," + items.get(i).y);
-						items.add(i, bicycle);
+						Trash trash = new Trash(items.get(i).x + rand.nextInt(20) - 10, items.get(i).y + rand.nextInt(30), 0.2, 0.2);
+
+						Random randTrashInt = new Random();
+						int randomInt = randTrashInt.nextInt(101);
+						// edit chances
+						if (randomInt <= 20) {
+							trash.SetImage(bicycle);
+							trash.hintName = "bicycle";
+						} else if (randomInt <= 40) {
+							trash.wMult = 0.5;
+							trash.hMult = 0.5;
+							trash.SetImage(fish);
+							trash.hintName = "fish";
+						} else if (randomInt <= 80) {
+							trash.wMult = 0.5;
+							trash.hMult = 0.5;
+							trash.SetImage(tumor);
+							trash.hintName = "tumor";
+						} else if (randomInt <= 95) {
+							trash.wMult = 0.7;
+							trash.hMult = 0.7;
+							trash.SetImage(surgicalKnife);
+							trash.hintName = "surgical knife";
+						} else {
+							trash.SetImage(oppenheimerDisc);
+							trash.hintName = "a disc";
+						}
+
+//						System.out.println("spawned " + trash.hintName);
+//						System.out.println("spawned trash on " + ((Organ) items.get(i)).type + " at: " + items.get(i).x + "," + items.get(i).y);
+						items.add(i, trash);
 					}
 				}
 			}
